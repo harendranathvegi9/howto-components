@@ -24,12 +24,16 @@
     // If this page is embedded in an iframe, the parent page has the choice
     // to adapt the size of the iframe to accommodate the contents.
     function sendSize() {
-      window.parent.postMessage(document.documentElement.getBoundingClientRect().height, '*');
+      const size = Math.max(
+        document.documentElement.getBoundingClientRect().height,
+        document.scrollingElement.scrollHeight
+      );
+      window.parent.postMessage(size, '*');
     }
 
     // The parents window can query the iframe’s document size at any time by
     // sending any message.
-    window.addEventListener('message', sendSize);
+    window.addEventListener('message', _ => sendSize());
 
     // If there’s a `nojs` in the URL’s query string, don’t load the elements,
     // somewhat emulating disabled JavaScript.
