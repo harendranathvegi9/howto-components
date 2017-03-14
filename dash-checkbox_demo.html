@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<p>
+  <a href="?nojs">Load without JavaScript</a>
+  <a href="?">Load with JavaScript</a>
+</p>
+
+<!doctype html>
+<style>
+  dash-checkbox {
+    display: inline-block;
+    background: url('./images/unchecked-checkbox.svg') no-repeat;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+  }
+  
+  dash-checkbox[aria-checked="true"] {
+    background: url('./images/checked-checkbox.svg') no-repeat;
+    background-size: contain;
+  }
+</style>
+
+<dash-checkbox></dash-checkbox>
+
+<script>
+  function loadScript(src) {
+    return new Promise(resolve => {
+      const s = document.createElement('script');
+      s.onload = resolve;
+      s.src = src;
+      document.head.appendChild(s);
+    });
+  }
+  if (!document.location.search.includes('nojs')) {
+    const whenScriptsLoaded = [
+      'scripts/custom-elements.min.js',
+      'dash-checkbox.js',
+    ].reduce((chain, src) =>
+      chain.then(_ => loadScript(src)),
+      Promise.resolve()
+    );
+    whenScriptsLoaded
+      .then(_ => customElements.whenDefined('dash-checkbox'))
+      .then(_ => sendSize());
+  }
+  function sendSize() {
+    window.parent.postMessage(document.documentElement.getBoundingClientRect().height, '*');
+  }
+  window.addEventListener('resize', sendSize);
+  window.addEventListener('message', sendSize);
+  sendSize();
+</script>
+</html>

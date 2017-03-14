@@ -1,0 +1,376 @@
+<!--
+Copyright 2017 Google Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!doctype html>
+<title>Dash Elements – dash-tab-panel</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="styles/main.css" />
+
+<h1>dash-tab-panel</h1>
+<section class="intro">
+  <p>Tab panels are a pattern to limit visible content by separating
+it into multiple panels. Only one panel is visible at a time, while
+<em>all</em> corresponding tabs are always visible. To switch from one panel
+to another, the corresponding tab has to be selected.</p>
+<p>Invisible panels are hidden with <code>display: none</code> and <code>aria-hidden</code>.
+By either clicking or by using the arrow keys the user changes the
+selection.</p>
+<p>If JavaScript is disabled, all panels are shown interleaved with the
+respective tabs. The tabs now function as headings.</p>
+
+</section>
+<h2>Demo</h2>
+<iframe src="dash-tab-panel_demo.html" class="demo"></iframe>
+<h2>Example usage</h2>
+<ul class="literate demo" id="dash-tab-panel">
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code><span class="token doctype">&lt;!doctype html></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span>dash-tab-panel {</code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p>The element uses flex box to line up the tabs in the first line
+and wraps if necessary.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>display: flex;
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>flex-wrap: wrap;
+<span class="indent">&nbsp;&nbsp;</span>}
+<span class="indent">&nbsp;&nbsp;</span>dash-tab-panel header {
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>border: 1px solid black;
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>padding: 20px;
+<span class="indent">&nbsp;&nbsp;</span>}
+<span class="indent">&nbsp;&nbsp;</span>dash-tab-panel section {</code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p>Each section has a base size of 100%, forcing it to be in its
+own row.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>flex-basis: 100%;
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>padding: 20px;
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>background-color: lightgray;
+<span class="indent">&nbsp;&nbsp;</span>}
+<span class="indent">&nbsp;&nbsp;</span>.hidden {
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>display: none;
+<span class="indent">&nbsp;&nbsp;</span>}
+<span class="indent">&nbsp;&nbsp;</span>.selected {
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>background-color: bisque;
+<span class="indent">&nbsp;&nbsp;</span>}</code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p>If JavaScript does not run, the element will stay <code>:unresolved</code>.
+In that case this style adds spacing between tabs and panel.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span>dash-tab-panel:unresolved header {
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>margin-top: 10px;
+<span class="indent">&nbsp;&nbsp;</span>}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dash-tab-panel</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab<span class="token punctuation">"</span></span> <span class="token attr-name">aria-controls</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tab 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab1<span class="token punctuation">"</span></span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tabpanel<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Content 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab<span class="token punctuation">"</span></span> <span class="token attr-name">aria-controls</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tab 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab2<span class="token punctuation">"</span></span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tabpanel<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Content 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab<span class="token punctuation">"</span></span> <span class="token attr-name">aria-controls</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tab 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tab3<span class="token punctuation">"</span></span> <span class="token attr-name">aria-role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tabpanel<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Content 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dash-tab-panel</span><span class="token punctuation">></span></span></code>
+  </li>
+  
+</ul>
+<h2>Code</h2>
+<ul class="literate code" id="dash-tab-panel">
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>TabPanel</code> is a container element for tabs and panels.</p>
+<p>Tabs have the <code>aria-role=tab</code> attribute and the ID of the associated panel
+in the <code>aria-controls</code> attribute. The selected tab has the <code>.selected</code> class.</p>
+<p>Panels have the <code>aria-role=tabpanel</code> attribute.</p>
+</aside>
+    <code><span class="token keyword">class</span> <span class="token class-name">TabPanel</span> <span class="token keyword">extends</span> <span class="token class-name">HTMLElement</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p>The constructor hooks up the event handlers. Since only events on the
+element itself are handled, this can take place in the constructor.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> For accessibility, the element needs to do some manual input
+ event handling.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'keydown'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_handleKeyDown<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_handleClick<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>connectedCallback</code> groups tabs and panels by reordering and makes sure
+exactly one tab is active.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Acquire all tabs and panels inside the element</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> tabs <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tab]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> panels <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tabpanel]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> If there are no tabs, there is no way to switch between panels. Abort.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">if</span> <span class="token punctuation">(</span>tabs<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> For progressive enhancement, the markup should alternate between tabs
+ and panels. If JavaScript is disabled, all panels are
+ visible with their respective tab right above them.
+ If JavaScript is enabled, the element reorders all children into
+ their two groups. First all the tabs, then all the panels.
+ Calling <code>appendChild</code> on an already inserted element <em>moves</em> the
+ element to the last child position.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tabs<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>tab <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>tab<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>panels<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>panel <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>panel<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> The element checks if any of the tabs have been marked as selected. If
+ not, the first tab is now selected.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> selectedTab <span class="token operator">=</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tabs<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> e<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-selected'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'true'</span><span class="token punctuation">)</span> <span class="token operator">||</span> tabs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Next, we switch to the selected tab. <code>selectTab</code> takes care of marking
+ all other tabs as deselected and hiding all other panels.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_selectTab</span><span class="token punctuation">(</span>selectedTab<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>reset</code> marks all tabs as deselected and hides all the panels.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> tabs <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tab]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> panels <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tabpanel]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tabs<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>tab <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tab<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">'selected'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tab<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'tabindex'</span><span class="token punctuation">,</span> <span class="token string">'-1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tab<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-selected'</span><span class="token punctuation">,</span> <span class="token string">'false'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>panels<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>panel <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>panel<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'hidden'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>panel<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-hidden'</span><span class="token punctuation">,</span> <span class="token string">'true'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>selectTab</code> marks the given tab as selected.
+Additionally, it unhides the panel corresponding to the given tab.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">_selectTab</span><span class="token punctuation">(</span>newTab<span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Deselect all tabs and hide all panels.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> panels <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tabpanel]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Get the panel that corresponds to the given tab.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> newPanelId <span class="token operator">=</span> newTab<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-controls'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> newPanel <span class="token operator">=</span> panels<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>panel <span class="token operator">=</span><span class="token operator">></span> panel<span class="token punctuation">.</span>id <span class="token operator">===</span> newPanelId<span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> If that panel doesn’t exist, abort.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>newPanel<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`No panel with id </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>newPanelId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Unhide the panel and mark the tab as active.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newPanel<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">'hidden'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newPanel<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-hidden'</span><span class="token punctuation">,</span> <span class="token string">'false'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'selected'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-selected'</span><span class="token punctuation">,</span> <span class="token string">'true'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'tabindex'</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab<span class="token punctuation">.</span><span class="token function">focus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>_handleKeyDown</code> handles key presses inside the tab panel.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">_handleKeyDown</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> If the keypress did not originate from a tab element itself,
+ it was a keypress inside the a panel or on empty space. Nothing to do.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>target<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-role'</span><span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token string">'tab'</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> TODO: Why are we skipping on alt?</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>altKey<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">let</span> newIdx<span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">let</span> newTab<span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">const</span> tabs <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[aria-role=tab]'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> The switch-case will determine which tab should be marked as active
+ depending on the key that was pressed.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">switch</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>keyCode<span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> When up or left is pressed, the previous tab is selected. If the
+ first tab is reached, the element loops around to the last tab.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">37</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'ArrowLeft':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">38</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'ArrowUp':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newIdx <span class="token operator">=</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tabs<span class="token punctuation">.</span><span class="token function">findIndex</span><span class="token punctuation">(</span>panel <span class="token operator">=</span><span class="token operator">></span> panel<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">'selected'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab <span class="token operator">=</span> tabs<span class="token punctuation">[</span><span class="token punctuation">(</span>newIdx <span class="token operator">+</span> tabs<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token operator">%</span> tabs<span class="token punctuation">.</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">break</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Same goes for right and down, but in the other direction.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">39</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'ArrowRight':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">40</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'ArrowDown':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newIdx <span class="token operator">=</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>tabs<span class="token punctuation">.</span><span class="token function">findIndex</span><span class="token punctuation">(</span>panel <span class="token operator">=</span><span class="token operator">></span> panel<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">'selected'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab <span class="token operator">=</span> tabs<span class="token punctuation">[</span><span class="token punctuation">(</span>newIdx <span class="token operator">+</span> tabs<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token operator">%</span> tabs<span class="token punctuation">.</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">break</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> The home button always selects the first tab.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">36</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'Home':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab <span class="token operator">=</span> tabs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">break</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> And end always selects the last one.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">case</span> <span class="token number">35</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// 'End':</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>newTab <span class="token operator">=</span> tabs<span class="token punctuation">[</span>tabs<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">break</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Any other key press is ignored and passed back to the browser.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">default</span><span class="token punctuation">:</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> Select the new tab, that has been determined in the switch-case.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_selectTab</span><span class="token punctuation">(</span>newTab<span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> The browser might have some native functionality bound to the arrow
+ keys. Prevent the browser from taking any actions.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span>event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span></code>
+  </li>
+  
+  <li class="blockcomment">
+    <aside class=""><p><code>_handleClick</code> handles clicks inside the tab panel.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="token function">_handleClick</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token punctuation">{</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class="empty"></aside>
+    <code></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> If the click was not targeted on a tab element itself,
+ it was a click inside the a panel or on empty space. Nothing to do.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>event<span class="token punctuation">.</span>target<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'aria-role'</span><span class="token punctuation">,</span> <span class="token string">'tab'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span></code>
+  </li>
+  
+  <li class="linecomment">
+    <aside class=""><p> If it was on a tab element, though, select that tab.</p>
+</aside>
+    <code><span class="indent">&nbsp;&nbsp;</span><span class="indent">&nbsp;&nbsp;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_selectTab</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="indent">&nbsp;&nbsp;</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+window<span class="token punctuation">.</span>customElements<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'dash-tab-panel'</span><span class="token punctuation">,</span> TabPanel<span class="token punctuation">)</span><span class="token punctuation">;</span></code>
+  </li>
+  
+</ul>
+<script src="scripts/bootstrap.js" defer></script>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<p>
+  <a href="?nojs">Load without JavaScript</a>
+  <a href="?">Load with JavaScript</a>
+</p>
+
+<!doctype html>
+<style>
+  dash-accordion {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* Children get the `animating` class assigned if they are about to be
+  animated. The implementation relies on the `transitionend` event, so this
+  class _must_ define a transition on the `transform` property.*/
+  dash-accordion > *.animating {
+    transition: transform 0.3s ease-in-out;
+  }
+  /* Headings need a background color so they are not transparent. Otherwise
+  the content will shine through during the animation. */
+  dash-accordion-heading {
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+  }
+  dash-accordion-heading[aria-expanded="true"] {
+    background-color: bisque;
+  }
+  dash-accordion-panel {
+    padding: 20px;
+    background-color: lightgray;
+  }
+  dash-accordion-panel.collapsed {
+    display: none;
+  }
+  dash-accordion-panel.expanded {
+    display: block;
+  }
+</style>
+
+<dash-accordion>
+  <dash-accordion-heading role="heading">Tab 1</dash-accordion-heading>
+  <dash-accordion-panel role="region">Content 1</dash-accordion-panel>
+  <dash-accordion-heading role="heading">Tab 2</dash-accordion-heading>
+  <dash-accordion-panel role="region">Content 2</dash-accordion-panel>
+  <dash-accordion-heading role="heading">Tab 3</dash-accordion-heading>
+  <dash-accordion-panel role="region">Content 3</dash-accordion-panel>
+</dash-accordion>
+
+
+<script>
+  (function() {
+    // Loads a script asynchronously and returns a promise that resolves when
+    // when the script has loaded.
+    function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement('script');
+        s.onload = resolve;
+        s.src = src;
+        document.head.appendChild(s);
+      });
+    }
+
+    // Sends a message to the parent window with the current size of document.
+    // If this page is embedded in an iframe, the parent page has the choice
+    // to adapt the size of the iframe to accommodate the contents.
+    function sendSize() {
+      window.parent.postMessage(document.documentElement.getBoundingClientRect().height, '*');
+    }
+
+    // The parents window can query the iframe’s document size at any time by
+    // sending any message.
+    window.addEventListener('message', sendSize);
+
+    // If there’s a `nojs` in the URL’s query string, don’t load the elements,
+    // somewhat emulating disabled JavaScript.
+    if (!document.location.search.includes('nojs')) {
+      const whenScriptsLoaded = [
+        'scripts/custom-elements.min.js',
+        'dash-accordion.js',
+      ].reduce((chain, src) =>
+        chain.then(_ => loadScript(src)),
+        Promise.resolve()
+      );
+      whenScriptsLoaded
+        .then(_ => customElements.whenDefined('dash-accordion'))
+        .then(_ => sendSize());
+    }
+
+    // Hook up ResizeObserver for dynamic size adjustments
+    loadScript('scripts/resizeobserver.min.js')
+      .then(_ => {
+        const ResizeObserver =
+          self.ResizeObserver || self.ResizeObserverPolyfill;
+        const ro = new ResizeObserver(_ => sendSize());
+        // One of them’s gotta be the right one, right?
+        ro.observe(document.documentElement);
+        ro.observe(document.body);
+        ro.observe(document.scrollingElement);
+      });
+
+    // Send size after loading is done
+    requestAnimationFrame(_ => sendSize());
+  })();
+</script>
+</html>

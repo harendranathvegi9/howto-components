@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<p>
+  <a href="?nojs">Load without JavaScript</a>
+  <a href="?">Load with JavaScript</a>
+</p>
+
+<style>
+  dash-tree {
+    font-family: 'Courier New', Courier, monospace;
+  }
+  dash-tree,
+  dash-treeitem {
+    display: block;
+  }
+  dash-treegroup {
+    padding-left: 20px;
+  }
+  dash-treeitem[aria-expanded="false"] > span::before {
+    content: '+';
+  }
+  dash-treeitem[aria-expanded="true"] > span::before {
+    content: '-';
+  }
+  dash-treeitem[aria-expanded="true"] > dash-treegroup {
+    display: block;
+  }
+  dash-treeitem[aria-expanded="false"] > dash-treegroup {
+    display: none;
+  }
+  .active {
+    background: lightgrey;
+    outline: 2px solid black;
+  }
+  .selected {
+    background: hotpink;
+  }
+</style>
+
+<!-- Possible PE: Upgrade from list/listem to tree/treeitem -->
+<h3 id="file-tree-lbl">File Tree</h3>
+<dash-tree aria-labelledby="file-tree-lbl">
+  <dash-treeitem>Project1</dash-treeitem>
+  <dash-treeitem>Project2</dash-treeitem>
+  <dash-treeitem>Project3</dash-treeitem>
+  <dash-treeitem>
+    <span>Project 4</span>
+    <dash-treegroup>
+      <dash-treeitem>File1</dash-treeitem>
+      <dash-treeitem>File2</dash-treeitem>
+      <dash-treeitem>File3</dash-treeitem>
+      <dash-treeitem>
+        <span>Subproject 1</span>
+        <dash-treegroup>
+          <dash-treeitem>Subfile1</dash-treeitem>
+          <dash-treeitem>Subfile2</dash-treeitem>
+          <dash-treeitem>Subfile3</dash-treeitem>
+          <dash-treeitem aria-expanded="true">
+            <span>Subsubproject 1</span>
+            <dash-treegroup>
+              <dash-treeitem>Subsubfile1</dash-treeitem>
+              <dash-treeitem>Subsubfile2</dash-treeitem>
+              <dash-treeitem>Subsubfile3</dash-treeitem>
+            </dash-treegroup>
+          </dash-treeitem>
+        </dash-treegroup>
+      </dash-treeitem>
+    </dash-treegroup>
+  </dash-treeitem>
+  <dash-treeitem>Project 5</dash-treeitem>
+  <dash-treeitem aria-expanded="true">
+    <span>Project 6</span>
+    <dash-treegroup>
+      <dash-treeitem>File1</dash-treeitem>
+      <dash-treeitem>File2</dash-treeitem>
+      <dash-treeitem>File3</dash-treeitem>
+      <dash-treeitem aria-expanded="true">
+        <span>Subproject 2</span>
+        <dash-treegroup>
+          <dash-treeitem>Subfile1</dash-treeitem>
+          <dash-treeitem>Subfile2</dash-treeitem>
+          <dash-treeitem>Subfile3</dash-treeitem>
+          <dash-treeitem>
+            <span>Subsubproject 2</span>
+            <dash-treegroup>
+              <dash-treeitem>Subsubfile1</dash-treeitem>
+              <dash-treeitem>Subsubfile2</dash-treeitem>
+              <dash-treeitem>Subsubfile3</dash-treeitem>
+            </dash-treegroup>
+          </dash-treeitem>
+        </dash-treegroup>
+      </dash-treeitem>
+    </dash-treegroup>
+  </dash-treeitem>
+  <dash-treeitem>Project 7</dash-treeitem>
+  <dash-treeitem aria-expanded="false">
+    <span>Project 8</span>
+    <dash-treegroup>
+      <dash-treeitem>File1</dash-treeitem>
+      <dash-treeitem>File2</dash-treeitem>
+      <dash-treeitem>File3</dash-treeitem>
+    </dash-treegroup>
+  </dash-treeitem>
+</dash-tree>
+
+<script>
+  (function() {
+    // Loads a script asynchronously and returns a promise that resolves when
+    // when the script has loaded.
+    function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement('script');
+        s.onload = resolve;
+        s.src = src;
+        document.head.appendChild(s);
+      });
+    }
+
+    // Sends a message to the parent window with the current size of document.
+    // If this page is embedded in an iframe, the parent page has the choice
+    // to adapt the size of the iframe to accommodate the contents.
+    function sendSize() {
+      window.parent.postMessage(document.documentElement.getBoundingClientRect().height, '*');
+    }
+
+    // The parents window can query the iframe’s document size at any time by
+    // sending any message.
+    window.addEventListener('message', sendSize);
+
+    // If there’s a `nojs` in the URL’s query string, don’t load the elements,
+    // somewhat emulating disabled JavaScript.
+    if (!document.location.search.includes('nojs')) {
+      const whenScriptsLoaded = [
+        'scripts/custom-elements.min.js',
+        'dash-tree.js',
+      ].reduce((chain, src) =>
+        chain.then(_ => loadScript(src)),
+        Promise.resolve()
+      );
+      whenScriptsLoaded
+        .then(_ => customElements.whenDefined('dash-tree'))
+        .then(_ => sendSize());
+    }
+
+    // Hook up ResizeObserver for dynamic size adjustments
+    loadScript('scripts/resizeobserver.min.js')
+      .then(_ => {
+        const ResizeObserver =
+          self.ResizeObserver || self.ResizeObserverPolyfill;
+        const ro = new ResizeObserver(_ => sendSize());
+        // One of them’s gotta be the right one, right?
+        ro.observe(document.documentElement);
+        ro.observe(document.body);
+        ro.observe(document.scrollingElement);
+      });
+
+    // Send size after loading is done
+    requestAnimationFrame(_ => sendSize());
+  })();
+</script>
+</html>

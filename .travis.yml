@@ -1,0 +1,17 @@
+sudo: required
+language: node
+services:
+  - docker
+
+before_install:
+  - npm run docker-build
+
+script:
+  - npm run docker-test
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: "tools/pr_preview.sh"
+  on:
+    all_branches: true

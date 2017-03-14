@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<p>
+  <a href="?nojs">Load without JavaScript</a>
+  <a href="?">Load with JavaScript</a>
+</p>
+
+<!doctype html>
+<style>
+dash-combobox {
+  display: block;
+  position: relative;
+}
+dash-combobox-suggestions {
+  position: absolute;
+  display: none;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.54);
+}
+dash-combobox[aria-expanded="true"] dash-combobox-suggestions {
+  display: block;
+}
+dash-combobox-suggestion {
+  display: block;
+  padding: 10px;
+}
+dash-combobox-suggestion:hover,
+dash-combobox-suggestion[aria-selected="true"] {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+/* FIXME: Find a better solution */
+dash-combobox {
+  padding-bottom: 400px;
+}
+</style>
+
+<dash-combobox>
+  <label>
+    Favorite fruit:
+    <input type="text">
+  </label>
+  <dash-combobox-suggestions>
+    <dash-combobox-suggestion>Apple</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Apricot</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Banana</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Blueberry</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Cherry</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Grape</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Grapefruit</dash-combobox-suggestion>
+    <dash-combobox-suggestion>Guava</dash-combobox-suggestion>
+  </dash-combobox-suggestions>
+</dash-combobox>
+
+
+<script>
+  (function() {
+    // Loads a script asynchronously and returns a promise that resolves when
+    // when the script has loaded.
+    function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement('script');
+        s.onload = resolve;
+        s.src = src;
+        document.head.appendChild(s);
+      });
+    }
+
+    // Sends a message to the parent window with the current size of document.
+    // If this page is embedded in an iframe, the parent page has the choice
+    // to adapt the size of the iframe to accommodate the contents.
+    function sendSize() {
+      const size = Math.max(
+        document.documentElement.getBoundingClientRect().height,
+        document.scrollingElement.scrollHeight
+      );
+      window.parent.postMessage(size, '*');
+    }
+
+    // The parents window can query the iframe’s document size at any time by
+    // sending any message.
+    window.addEventListener('message', _ => sendSize());
+
+    // If there’s a `nojs` in the URL’s query string, don’t load the elements,
+    // somewhat emulating disabled JavaScript.
+    if (!document.location.search.includes('nojs')) {
+      const whenScriptsLoaded = [
+        'scripts/custom-elements.min.js',
+        'dash-combobox.js',
+      ].reduce((chain, src) =>
+        chain.then(_ => loadScript(src)),
+        Promise.resolve()
+      );
+      whenScriptsLoaded
+        .then(_ => customElements.whenDefined('dash-combobox'))
+        .then(_ => sendSize());
+    }
+
+    // Hook up ResizeObserver for dynamic size adjustments
+    loadScript('scripts/resizeobserver.min.js')
+      .then(_ => {
+        const ResizeObserver =
+          self.ResizeObserver || self.ResizeObserverPolyfill;
+        const ro = new ResizeObserver(_ => sendSize());
+        // One of them’s gotta be the right one, right?
+        ro.observe(document.documentElement);
+        ro.observe(document.body);
+        ro.observe(document.scrollingElement);
+      });
+
+    // Send size after loading is done
+    requestAnimationFrame(_ => sendSize());
+  })();
+</script>
+</html>
